@@ -1,0 +1,13 @@
+-- Import analytics/data/customers_powerbi.csv as the table named 'Customers'.
+Customers = COUNTROWS('Customers')
+Churned Customers = SUM('Customers'[ChurnFlag])
+Retained Customers = [Customers] - [Churned Customers]
+Churn Rate = DIVIDE([Churned Customers], [Customers], 0)
+Retention Rate = 1 - [Churn Rate]
+Monthly Charges = SUM('Customers'[MonthlyCharges])
+Churned Monthly Charges = SUM('Customers'[ChurnedMonthlyCharges])
+Avg Monthly Charge = AVERAGE('Customers'[MonthlyCharges])
+Avg Churned Monthly Charge = DIVIDE([Churned Monthly Charges], [Churned Customers], 0)
+Month-to-Month Churn Rate = CALCULATE([Churn Rate], 'Customers'[Contract] = "Month-to-month")
+Fiber Optic Churn Rate = CALCULATE([Churn Rate], 'Customers'[InternetService] = "Fiber optic")
+-- NOTE: "Churned Monthly Charges" is a DESCRIPTIVE metric, NOT a forecast or causal revenue-loss estimate.
